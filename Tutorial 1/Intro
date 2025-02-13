@@ -1,0 +1,7 @@
+print('name')
+Age = 30
+Sex = 'Female'
+
+print(Age)
+
+def NAME
