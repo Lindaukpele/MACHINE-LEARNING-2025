@@ -2,58 +2,59 @@
 import random
 
 class BankAccount:
-    def __init__(self, customer_id, account_number, customer_name, account_type, balance=0):
-        self.customer_id = customer_id
-        self.account_number = account_number
-        self.customer_name = customer_name
-        self.account_type = account_type
-        self.balance = balance
-        
+    last_customer_id = 0   #Class variable to track the last customer ID
+    last_account_number = 1000 #Class variable to track the last account number
+
+    def __init__(self, customer_name, account_type, balance=0):
+        BankAccount.last_customer_id +=1
+        BankAccount.last_account_number +=1
+
+        self.customer_id = BankAccount.last_customer_id 
+        self.account_number = BankAccount.last_account_number
+        self.customer_name = customer_name        
+        self.account_type = account_type if account_type in ['checking', 'savings'] else 'checking'
+        self.balance = balance 
+
+        self.filename = f'{self.account_number} _{self.account_type}_{self.customer_name}.txt'
+
+       
+    def statementfile(self):
+        print(f'Account Balance: {self.balance}')
+
+        deposit_amount = int(input('Enter deposit amount: '))
+        if deposit_amount > 0:
+            self.balance += deposit_amount
+            print(f'Your new balance after deposit: {self.balance}')
+            
+        withdrawal_amount = int(input('Enter withdrawal amount: '))
+        if withdrawal_amount > 0 and withdrawal_amount <= self.balance:
+            self.balance -= withdrawal_amount
+            print(f"Withdrawal successful. Your new balance: {self.balance}")
+            
+        else: 
+            print(f'Insufficient balance. Your balance is {self.balance}')
+            input('withdrawal_amount:')
+            print(f"Withdrawal successful. Your new balance: {self.balance}")
+
+
+        return self.balance
+
+#creating an instance of BankAccount
+customer_1 = BankAccount('Linda', 'checking', 200)
+customer_2 = BankAccount('James', 'savings', 150)
+customer_3 = BankAccount('John', 'checking', 400)
+
+
+customer_1.statementfile()
+customer_2.statementfile()
+customer_3.statementfile()
+
+print(f"Customer_1: ID={customer_1.customer_id}, Account={customer_1.account_number}'), File={customer_1.filename}")
+print(f"Customer_2: ID={customer_2.customer_id}, Account={customer_2.account_number}'), File={customer_2.filename}")
+print(f"Customer_3: ID={customer_3.customer_id}, Account={customer_3.account_number}'), File={customer_3.filename}")
+
+
+
     
-    def generate_id(self):
-        customer_id = random.randint(100, 9999)
-        return self.customer_id
+
     
-    def generate_account_number(self):
-        account_number = random.randint(1234567, 999999)   #how do i increase the random digit by one or how do i make it orderly instead of random digit
-        return self.account_number
-    
-    def acc_type(self, account_type):
-        if account_type == 'Chequing':
-            return 'Chequing'
-        else:
-            return 'Savings' 
-
-    def deposit(self, cash_deposit):
-        if cash_deposit > 0: 
-            self.balance = self.balance + cash_deposit 
-            print(f"Deposit successful. Your new balance is: {self.balance}")
-        else:
-            print("Invalid transaction")
-    
-    def withdrawal(self, balance):
-        withdraw_amount = 0
-        if withdraw_amount <= balance:
-            print(f"Your available balance is: {balance}")
-        else:
-            print("Insufficient balance")
-    
-customer_1 = BankAccount('customer_id', 'account_number', 'Linda Ukpele', '1', 0)
-customer_2 = BankAccount('customer_id', 'account_number', 'James Mora', '0', 0)
-
-#customer_1.account_details()
-customer_1.generate_id()
-customer_1.generate_account_number()
-customer_1.deposit(200)
-customer_1.balance()
-customer_1.withdraw(50)
-customer_1.balance()
-
-BankAccount()
-
-
-
-        
-
-
-
